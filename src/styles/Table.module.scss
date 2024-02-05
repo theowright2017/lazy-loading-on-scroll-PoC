@@ -1,0 +1,59 @@
+
+
+
+
+.container table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    font-size: 11px;
+    font-weight: normal;
+    // font-family: $table_font_family;
+  }
+  
+  .container tbody {
+    /* border-bottom: 1px solid lightgray; */
+    border: 1px solid black;
+  }
+  
+  .table_wrap th {
+    /* border-bottom: 1px solid lightgray;
+    border-right: 1px solid lightgray; */
+    // border: 1px solid black;
+    /* position: relative; */
+  }
+  
+  .table_wrap th {
+    position: relative;
+  }
+  
+  .container tbody {
+    border: 1px solid black;
+  }
+  
+  .table_wrap {
+    .inner {
+    }
+  }
+  
+  .empty_row {
+    height: 20px;
+  }
+  
+  .container tr {
+    height: '20px';
+    border: 1px solid blue;
+  }
+  
+  .container td {
+    padding-left: 2px;
+  
+  
+  }
+  
+  
+  //////////////////////  TRACKS ////////////////////////
+  
+  .break_slot {
+    background-color: coral;
+  }
+  
