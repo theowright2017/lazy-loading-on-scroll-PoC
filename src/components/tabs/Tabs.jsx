@@ -6,9 +6,12 @@ const Tab = (props) => (
 			<Tabs.Trigger className="TabsTrigger" value="tab1">
 				Table One
 			</Tabs.Trigger>
-			{/* <Tabs.Trigger className="TabsTrigger" value="tab2">
+			<Tabs.Trigger className="TabsTrigger" value="tab2">
 				Table Two
-			</Tabs.Trigger> */}
+			</Tabs.Trigger>
+			<Tabs.Trigger className="TabsTrigger" value="tab3">
+				Table Three
+			</Tabs.Trigger>
 		</Tabs.List>
 		{props.children}
 	</Tabs.Root>

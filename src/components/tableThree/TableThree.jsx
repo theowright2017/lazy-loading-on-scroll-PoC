@@ -13,21 +13,24 @@ import { getItems, getItemsByPage } from "@/api/dataGenerator";
 
 import styles from "../../styles/Table.module.scss";
 import { getIsoDuration } from "@/api/denormalise";
+import { useOnScroll } from "../hooks/useOnScroll";
 
-export const TableOne = (props) => {
+export const TableThree = (props) => {
 	const [data, setData] = useState([]);
 	const [totalCount, setTotalCount] = useState(0);
 
 	const [columns] = useState([...props.columns]);
+
+	const { hasScrolled, setHasScrolledTrue } = useOnScroll();
 
 	const parentRef = useRef();
 
 	useEffect(() => {
 		const getData = async function () {
 			try {
-				const resp = await getItems(50);
+				const resp = await getItems(100);
 				console.log("resp.data", resp.data.data);
-			
+
 				setData(resp.data.data);
 			} catch (error) {
 				console.error(error);
@@ -37,20 +40,20 @@ export const TableOne = (props) => {
 		getData();
 	}, []);
 
-	useEffect(() => {
-		const worker = new Worker(
-			new URL("../../worker/dataLoadWorker.js", import.meta.url)
-		);
+	// useEffect(() => {
+	// 	const worker = new Worker(
+	// 		new URL("../../worker/dataLoadWorker.js", import.meta.url)
+	// 	);
 
-		worker.postMessage({ firstAmount: 50 });
+	// 	worker.postMessage({ startPage: 2 });
 
-		worker.onmessage = (event) => {
-			console.log("DATA", event.data);
-			setData((cur) => cur.concat(...event.data));
-		};
+	// 	worker.onmessage = (event) => {
+	// 		console.log("DATA", event.data);
+	// 		setData((cur) => cur.concat(...event.data));
+	// 	};
 
-		return () => worker.terminate();
-	}, []);
+	// 	return () => worker.terminate();
+	// }, []);
 
 	const table = useReactTable({
 		data,
@@ -65,19 +68,48 @@ export const TableOne = (props) => {
 		overscan: 20,
 	});
 
+	function handleOnScroll() {
+		const worker = new Worker(
+			new URL("../../worker/dataLoadWorker.js", import.meta.url)
+		);
+
+		worker.postMessage({ firstAmount: 100 });
+
+		worker.onmessage = (event) => {
+			console.log("DATA", event.data);
+			setData((cur) => cur.concat(...event.data));
+			worker.terminate();
+		};
+	}
+
 	const { rows } = table.getCoreRowModel();
 
+    // console.log('ROWS::::::::::::::::::', rows)
 	return (
 		<div
 			ref={parentRef}
 			className={styles.container}
 			style={{
-				height: "300px",
+				height: "150px",
 				width: "600px",
 				margin: "30px",
 				border: "1px solid black",
 				overflow: "auto",
 			}}
+			onScroll={
+				hasScrolled
+					? undefined
+					: (event) => {
+							if (
+								!hasScrolled &&
+								event.target.scrollLeft === 0 &&
+								event.target.scrollTop > 0
+							) {
+								setHasScrolledTrue();
+								handleOnScroll();
+							}
+					  }
+			}
 		>
 			<div style={{ height: `${virtualizer.getTotalSize()}px` }}>
 				<table>
@@ -103,9 +135,10 @@ export const TableOne = (props) => {
 							if (row) {
 								row.original.isoDuration = getIsoDuration(row.id).date;
 							}
+
 							return (
 								<tr
-									key={row ? row.id : virtualRow.index}
+									key={`${props.key}__${virtualRow.index}`}
 									style={{
 										height: `${virtualRow.size}px`,
 										transform: `translateY(${
@@ -113,11 +146,14 @@ export const TableOne = (props) => {
 										}px)`,
 									}}
 								>
-									{row &&
+									{row ? (
 										row.getVisibleCells().map((cell, cellIndex) => {
 											return (
-												<td key={cell.id}>
-													<div style={{ backgroundColor: "lightblue" }}>
+												<td
+													key={`${props.key}_${virtualRow.index}_${cellIndex}`}
+                                                    style={{backgroundColor: 'lightblue', height: '25px', width: '80px', border: '1px solid blue'}}
+												>
+													<div style={{ width: '80px', height: '100%', width: '100%' }}>
 														{flexRender(
 															cell.column.columnDef.cell,
 															cell.getContext()
@@ -125,7 +161,12 @@ export const TableOne = (props) => {
 													</div>
 												</td>
 											);
-										})}
+										})
+									) : (
+										<tr key={`${props.key}_blank_${virtualRow.index}`}>
+											Loading....
+										</tr>
+									)}
 								</tr>
 							);
 						})}

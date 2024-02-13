@@ -7,7 +7,7 @@ export const PageOne = () => {
 		// const { id, phase, actualDuration, baseDuration, startTime, commitTime } =
 		// 	data;
         //     console.log('DATA', data)
-		console.log("actualDuration: ----------", actualDuration);
+		// console.log("actualDuration: ----------", actualDuration);
 	}
 	return (
 		<Profiler id={"TableOne"} onRender={onRender}>
