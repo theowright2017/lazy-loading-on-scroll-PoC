@@ -23,7 +23,7 @@
 
 
 
-The existing architectural approach of loading all data up front and storing in client side cache has now been shown to be inadequate and reimplementing existing issues.
+The existing architectural approach of loading all data up front and storing in client side cache has now been shown to be inadequate and reimplements existing issues.
 
 This PoC is to provide a viable alternative.
 The intended approach presented here is to configure the way we load all list based data based entirely on the users behaviour and interaction with the app.
