@@ -1,4 +1,67 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+<br />
+<div align="center" >
+  
+
+  <h3 align="center">Lazy Loading on Scroll (Proof of Concept)</h3>
+
+  <p align="center">
+    Table and list based data can be configured to load based on user behaviour and interaction.
+    <br />
+   
+  </p>
+</div>
+
+
+
+
+
+
+<!-- ABOUT THE PROJECT -->
+## About The Project
+
+
+
+
+The existing architectural approach of loading all data up front and storing in client side cache has now been shown to be inadequate and reimplementing existing issues.
+
+This PoC is to provide a viable alternative.
+The intended approach presented here is to configure the way we load all list based data based entirely on the users behaviour and interaction with the app.
+This allows a far more granular approach to loading and caching data in the client, allowing for more flexibility and better performance.
+
+
+
+
+
+
+
+
+
+### Built With
+
+This project is using the following technologies:
+
+
+- Languages
+  - <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">Javascript</a>
+  - <a href="https://www.typescriptlang.org/">Typescript</a>
+  - <a href="https://sass-lang.com/">SCSS</a>
+- Frameworks
+  - <a href="https://nextjs.org/">Next.js</a>
+  - <a href="https://react.dev/">React</a>
+- Libraries
+  - <a href="https://tanstack.com/table/latest">Tanstack (React) Table</a>
+  - <a href="https://tanstack.com/virtual/latest">Tanstack Virtual</a>
+  - <a href="https://www.radix-ui.com/">Radix UI</a>
+
+
+  
+
+
+
+
+
+<!-- GETTING STARTED -->
 
 ## Getting Started
 
@@ -16,25 +79,27 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+<!-- USAGE EXAMPLES -->
+## Usage
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Demonstrates the ability to load large data sets on the frontend whilst maintaining strong performance for vital web based metrics, i.e First Contentful Paint, etc.
 
-## Deploy on Vercel
+- Requirements are as follows:
+   - Enable a page to load quickly whilst showing large amounts of data in table or list format.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Code behaviour and points to note:
+  - Each table is initially populated from an API call with a set number of items, i.e 100.  Allowing the page to load quickly and become responsive for the user to interact with.
+  - The Virtualizer for each table is created with the total number of items available per table, also taken from an initial API call, i.e 10,000.  (Currently hard coded, but intended to receive from API).
+  - Remaining rows are filled with placeholder virtual items.
+  - Each table only loads further data on scroll.  Currently this is configured to load immediately on scroll.
+    - Can be configured further using Intersection Observers.  A set batch of data would only be called each time a particular virtual item comes close or into view whilst scrolling.
+  - A loading placeholder shows in each virtual item until API results are ready.
+ 
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
